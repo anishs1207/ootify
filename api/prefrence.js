@@ -30,13 +30,14 @@ app.post("/prefrences", (req, res) => {
 });
 app.put("/prefrences/:id", (req, res) => {
   const { id } = req.params;
-  const { gender } = req.body;
+  const { gender, occasions } = req.body;
 
   const user = arr.find((item) => item.id === id); 
 
   if (user) {
-    user.gender = gender;
-    console.log("Gender updated:", user);
+    if(gender) user.gender = gender;
+    if(occasions) user.occasions = occasions;
+    console.log("User updated:", user);
     return res.status(200).json(user);
   } else {
     return res.status(404).json({ message: "User not found" });
