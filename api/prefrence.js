@@ -43,5 +43,13 @@ app.put("/prefrences/:id", (req, res) => {
     return res.status(404).json({ message: "User not found" });
   }
 });
-
+app.get("/prefrences/:id", (req, res) => {
+  const { id } = req.params;
+  const user = arr.find((item) => item.id === id);
+  if (user) {
+    return res.status(200).json(user);
+  } else {
+    return res.status(404).json({ message: "User not found" });
+  }
+})
 app.listen(3001, () => console.log("Server running on port 3001"));

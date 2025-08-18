@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 export default function OccasionsPage() {
+  let router = useRouter();
   const [selectedOccasions, setSelectedOccasions] = useState([]);
   const uid = useSearchParams().get("uid");
   const occasions = [
@@ -56,7 +58,8 @@ export default function OccasionsPage() {
       }),
       credentials: "include",
     });
-    alert("Your preferences have been saved!");
+
+    router.push(`/dashboard?uid=${uid}`);
   }
 
   return (

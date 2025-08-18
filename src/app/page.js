@@ -23,7 +23,8 @@ export default function Home() {
       body: JSON.stringify({
         id: user.uid,
         name: user.displayName,
-        email: user.email
+        email: user.email,
+        avtar : user.photoURL
       }),
       credentials: "include"
     });
