@@ -1,37 +1,68 @@
-'use client';
-import { motion } from 'motion/react';
-import { useEffect, useRef, useState, useMemo } from 'react';
+"use client";
 
-const buildKeyframes = (from, steps) => {
+import { motion } from "motion/react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  RefObject,
+  CSSProperties,
+} from "react";
+
+// Type for keyframes object
+type Keyframes = Record<string, (string | number | undefined)[]>;
+
+// Build keyframes for motion
+const buildKeyframes = (
+  from: Record<string, any>,
+  steps: Record<string, any>[]
+): Keyframes => {
   const keys = new Set([
     ...Object.keys(from),
     ...steps.flatMap((s) => Object.keys(s)),
   ]);
 
-  const keyframes = {};
+  const keyframes: Keyframes = {};
   keys.forEach((k) => {
     keyframes[k] = [from[k], ...steps.map((s) => s[k])];
   });
   return keyframes;
 };
 
-const BlurText = ({
-  text = '',
+// Props for BlurText
+interface BlurTextProps {
+  text?: string;
+  delay?: number;
+  className?: string;
+  animateBy?: "words" | "chars";
+  direction?: "top" | "bottom";
+  threshold?: number;
+  rootMargin?: string;
+  animationFrom?: Record<string, any>;
+  animationTo?: Record<string, any>[];
+  easing?: (t: number) => number;
+  onAnimationComplete?: () => void;
+  stepDuration?: number;
+}
+
+export default function BlurText({
+  text = "",
   delay = 200,
-  className = '',
-  animateBy = 'words',
-  direction = 'top',
+  className = "",
+  animateBy = "words",
+  direction = "top",
   threshold = 0.1,
-  rootMargin = '0px',
+  rootMargin = "0px",
   animationFrom,
   animationTo,
   easing = (t) => t,
   onAnimationComplete,
   stepDuration = 0.35,
-}) => {
-  const elements = animateBy === 'words' ? text.split(' ') : text.split('');
+}: BlurTextProps) {
+  const elements = animateBy === "words" ? text.split(" ") : text.split("");
   const [inView, setInView] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -39,32 +70,31 @@ const BlurText = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.unobserve(ref.current);
+          if (ref.current) observer.unobserve(ref.current);
         }
       },
       { threshold, rootMargin }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threshold, rootMargin]);
 
   const defaultFrom = useMemo(
     () =>
-      direction === 'top'
-        ? { filter: 'blur(10px)', opacity: 0, y: -50 }
-        : { filter: 'blur(10px)', opacity: 0, y: 50 },
+      direction === "top"
+        ? { filter: "blur(10px)", opacity: 0, y: -50 }
+        : { filter: "blur(10px)", opacity: 0, y: 50 },
     [direction]
   );
 
   const defaultTo = useMemo(
     () => [
       {
-        filter: 'blur(5px)',
+        filter: "blur(5px)",
         opacity: 0.5,
-        y: direction === 'top' ? 5 : -5,
+        y: direction === "top" ? 5 : -5,
       },
-      { filter: 'blur(0px)', opacity: 1, y: 0 },
+      { filter: "blur(0px)", opacity: 1, y: 0 },
     ],
     [direction]
   );
@@ -82,17 +112,17 @@ const BlurText = ({
     <p
       ref={ref}
       className={className}
-      style={{ display: 'flex', flexWrap: 'wrap' }}
+      style={{ display: "flex", flexWrap: "wrap" } as CSSProperties}
     >
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
-        const spanTransition = {
+        const spanTransition: any = {
           duration: totalDuration,
           times,
           delay: (index * delay) / 1000,
+          ease: easing,
         };
-        (spanTransition).ease = easing;
 
         return (
           <motion.span
@@ -105,13 +135,11 @@ const BlurText = ({
               index === elements.length - 1 ? onAnimationComplete : undefined
             }
           >
-            {segment === ' ' ? '\u00A0' : segment}
-            {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
+            {segment === " " ? "\u00A0" : segment}
+            {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
           </motion.span>
         );
       })}
     </p>
   );
-};
-
-export default BlurText;
+}
