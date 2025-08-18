@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import TiltedCard from "../../uiComponents/titleCard";
+import { FaStar } from "react-icons/fa";
 
 export default function OccasionsPage() {
   const [selectedOccasions, setSelectedOccasions] = useState([]);
@@ -27,32 +28,36 @@ export default function OccasionsPage() {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
-        {occasions.map(occ => (
-          <TiltedCard
-            key={occ.value}
-            imageSrc={occ.img}
-            altText={occ.label}
-            captionText={occ.label}
-            containerHeight="280px"
-            containerWidth="280px"
-            imageHeight="280px"
-            imageWidth="280px"
-            rotateAmplitude={12}
-            scaleOnHover={1.15}
-            showMobileWarning={false}
-            showTooltip={false}
-            displayOverlayContent={true}
-            onClick={() => handleOccasionClick(occ.value)}
-            overlayContent={
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center p-4 pointer-events-none">
-                <p className="text-lg font-bold text-white drop-shadow-lg">{occ.label}</p>
-              </div>
-            }
-            className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-transform duration-500 hover:scale-105 ${
-              selectedOccasions.includes(occ.value) ? "ring-4 ring-purple-400" : ""
-            }`}
-          />
-        ))}
+        {occasions.map(occ => {
+          const isSelected = selectedOccasions.includes(occ.value);
+
+          return (
+            <div
+              key={occ.value}
+              onClick={() => handleOccasionClick(occ.value)}
+            >
+              <TiltedCard
+                imageSrc={occ.img}
+                altText={occ.label}
+                captionText={occ.label}
+                containerHeight="280px"
+                containerWidth="280px"
+                imageHeight="280px"
+                imageWidth="280px"
+                rotateAmplitude={12}
+                scaleOnHover={1.15}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center p-4 pointer-events-none">
+                    <p className="text-lg font-bold text-white drop-shadow-lg">{occ.label}</p>
+                  </div>
+                }
+              />
+            </div>
+          );
+        })}
       </div>
 
       {selectedOccasions.length > 0 && (

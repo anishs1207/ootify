@@ -2,8 +2,11 @@
 import { useState } from "react";
 import TiltedCard from "../../uiComponents/titleCard";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function Qna() {
+  const uid = useSearchParams().get("uid"); 
+  console.log(uid);
   const [gender, setGender] = useState("");
   let router = useRouter();
   const options = [
@@ -18,14 +21,26 @@ export default function Qna() {
       value: "female",
     },
   ];
-  function handleOptionClick(value) {
+  async function updateGender(gender) {
+    const response = await fetch(`http://localhost:3001/prefrences/${uid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        gender: gender
+      })
+      })
+  }
+  async function handleOptionClick(value) {
     setGender(value);
-    router.push("/prefrences");
+    await updateGender(value);
+    router.push(`/prefrences?uid=${uid}`);
   }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1122] to-[#2c1b3a] px-6 py-12">
       <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 mb-12 text-center">
-        Who's behind the pixel ? 
+        Who's behind the pixel ?
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 w-full max-w-5xl">

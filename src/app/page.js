@@ -9,18 +9,40 @@ export default function Home() {
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
   };
-  function handleGoogleLogin(){
-      signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      console.log("Logged in user:", user);
-      router.push("/qna");
-    })
-    .catch((error) => {
-      console.error("Login error:", error);
-      alert("Login failed!");
+  async function handleGoogleLogin() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // POST request
+    const postResponse = await fetch("http://localhost:3001/prefrences", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: user.uid,
+        name: user.displayName,
+        email: user.email
+      }),
+      credentials: "include"
     });
+
+    const postData = await postResponse.json();
+    console.log("POST response:", postData);
+
+    // GET request
+    const getResponse = await fetch("http://localhost:3001/prefrences");
+    const getData = await getResponse.json();
+    console.log("GET response:", getData);
+
+    console.log("Logged in user:", user);
+    router.push(`/qna?uid=${user.uid}`);
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed!");
   }
+}
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-[#1a1122] gap-7">
       <img
