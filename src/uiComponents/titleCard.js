@@ -22,7 +22,7 @@ export default function TiltedCard({
   showTooltip = true,
   overlayContent = null,
   displayOverlayContent = false,
-  onClick = null, // ← make sure we pass click prop
+  onClick = null,
 }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
@@ -71,7 +71,7 @@ export default function TiltedCard({
   return (
     <figure
       ref={ref}
-      onClick={onClick} // ← fixed here
+      onClick={onClick}
       className="relative w-full h-full [perspective:1000px] flex items-center justify-center cursor-pointer"
       style={{ height: containerHeight, width: containerWidth }}
       onMouseMove={handleMouse}
@@ -105,9 +105,8 @@ export default function TiltedCard({
             className="absolute inset-0 z-10 flex items-end justify-center p-4 bg-gradient-to-t from-black/50 to-transparent"
             style={{ opacity }}
           >
-            <p className="text-white font-bold text-lg drop-shadow-md">
-              {overlayContent}
-            </p>
+            {/* 👇 FIX: div allowed directly here */}
+            {overlayContent}
           </motion.div>
         )}
       </motion.div>
