@@ -1,9 +1,9 @@
 "use client";
-import LightRays from "../../uiComponents/lightRays";
+import LightRays from "../../components/lightRays";
 import { Bell } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Sidebar from "../../uiComponents/sidebar";
+import Sidebar from "../../components/sidebar";
 
 // --- MOCK DATA ---
 const discoverCategories = [
@@ -115,7 +115,7 @@ export default function Page() {
               <button className="relative p-2 rounded-full hover:bg-[#3a344a]">
                 <Bell className="w-6 h-6 text-gray-300"/>
               </button>
-              <img src={user?.avtar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="User Avatar" width={40} height={40} className="rounded-full cursor-pointer" />
+              <img src={user?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="User Avatar" width={40} height={40} className="rounded-full cursor-pointer" />
             </div>
           </header>
 

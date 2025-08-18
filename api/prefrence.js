@@ -47,6 +47,7 @@ app.get("/prefrences/:id", (req, res) => {
   const { id } = req.params;
   const user = arr.find((item) => item.id === id);
   if (user) {
+    console.log("User found:", user);
     return res.status(200).json(user);
   } else {
     return res.status(404).json({ message: "User not found" });
