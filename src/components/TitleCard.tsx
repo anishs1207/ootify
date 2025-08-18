@@ -1,12 +1,30 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+
+import { useRef, useState, MouseEvent } from "react";
+import { motion, useMotionValue, useSpring, MotionValue } from "motion/react";
 
 const springValues = {
   damping: 25,
   stiffness: 120,
   mass: 2,
 };
+
+interface TiltedCardProps {
+  imageSrc: string;
+  altText?: string;
+  captionText?: string;
+  containerHeight?: string | number;
+  containerWidth?: string | number;
+  imageHeight?: string | number;
+  imageWidth?: string | number;
+  scaleOnHover?: number;
+  rotateAmplitude?: number;
+  showMobileWarning?: boolean;
+  showTooltip?: boolean;
+  overlayContent?: React.ReactNode;
+  displayOverlayContent?: boolean;
+  onClick?: () => void;
+}
 
 export default function TiltedCard({
   imageSrc,
@@ -22,11 +40,13 @@ export default function TiltedCard({
   showTooltip = true,
   overlayContent = null,
   displayOverlayContent = false,
-  onClick = null,
-}) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  onClick,
+}: TiltedCardProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  // Motion values
+  const x: MotionValue<number> = useMotionValue(0);
+  const y: MotionValue<number> = useMotionValue(0);
   const rotateX = useSpring(useMotionValue(0), springValues);
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
@@ -39,7 +59,7 @@ export default function TiltedCard({
 
   const [lastY, setLastY] = useState(0);
 
-  function handleMouse(e) {
+  function handleMouse(e: MouseEvent<HTMLElement>) {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left - rect.width / 2;
@@ -105,7 +125,6 @@ export default function TiltedCard({
             className="absolute inset-0 z-10 flex items-end justify-center p-4 bg-gradient-to-t from-black/50 to-transparent"
             style={{ opacity }}
           >
-            {/* 👇 FIX: div allowed directly here */}
             {overlayContent}
           </motion.div>
         )}

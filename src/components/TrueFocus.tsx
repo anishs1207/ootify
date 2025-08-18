@@ -1,8 +1,26 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 
-const TrueFocus = ({
+interface TrueFocusProps {
+  sentence?: string;
+  manualMode?: boolean;
+  blurAmount?: number;
+  borderColor?: string;
+  glowColor?: string;
+  animationDuration?: number;
+  pauseBetweenAnimations?: number;
+}
+
+interface FocusRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const TrueFocus: React.FC<TrueFocusProps> = ({
   sentence = "True Focus",
   manualMode = false,
   blurAmount = 5,
@@ -12,12 +30,18 @@ const TrueFocus = ({
   pauseBetweenAnimations = 1,
 }) => {
   const words = sentence.split(" ");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [lastActiveIndex, setLastActiveIndex] = useState(null);
-  const containerRef = useRef(null);
-  const wordRefs = useRef([]);
-  const [focusRect, setFocusRect] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [focusRect, setFocusRect] = useState<FocusRect>({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
+  // Auto animate focus if not in manual mode
   useEffect(() => {
     if (!manualMode) {
       const interval = setInterval(() => {
@@ -28,12 +52,13 @@ const TrueFocus = ({
     }
   }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
 
+  // Update focus rectangle on active word change
   useEffect(() => {
     if (currentIndex === null || currentIndex === -1) return;
     if (!wordRefs.current[currentIndex] || !containerRef.current) return;
 
     const parentRect = containerRef.current.getBoundingClientRect();
-    const activeRect = wordRefs.current[currentIndex].getBoundingClientRect();
+    const activeRect = wordRefs.current[currentIndex]!.getBoundingClientRect();
 
     setFocusRect({
       x: activeRect.left - parentRect.left,
@@ -43,7 +68,7 @@ const TrueFocus = ({
     });
   }, [currentIndex, words.length]);
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (index: number) => {
     if (manualMode) {
       setLastActiveIndex(index);
       setCurrentIndex(index);
@@ -52,13 +77,13 @@ const TrueFocus = ({
 
   const handleMouseLeave = () => {
     if (manualMode) {
-      setCurrentIndex(lastActiveIndex);
+      setCurrentIndex(lastActiveIndex ?? 0);
     }
   };
 
   return (
     <div
-      className="relative flex gap-4 justify-center items-center flex-wrap "
+      className="relative flex gap-4 justify-center items-center flex-wrap"
       ref={containerRef}
     >
       {words.map((word, index) => {
@@ -66,16 +91,11 @@ const TrueFocus = ({
         return (
           <span
             key={index}
-            ref={(el) => (wordRefs.current[index] = el)}
+            ref={(el) => { wordRefs.current[index] = el; }}
             className="relative text-[3rem] text-white cursor-pointer font-bold"
             style={{
-              filter: manualMode
-                ? isActive
-                  ? `blur(0px)`
-                  : `blur(${blurAmount}px)`
-                : isActive
-                  ? `blur(0px)`
-                  : `blur(${blurAmount}px)`,
+              filter: isActive ? `blur(0px)` : `blur(${blurAmount}px)`,
+              // @ts-expect-error custom CSS vars
               "--border-color": borderColor,
               "--glow-color": glowColor,
               transition: `filter ${animationDuration}s ease`,
@@ -101,38 +121,28 @@ const TrueFocus = ({
           duration: animationDuration,
         }}
         style={{
+          // @ts-expect-error custom CSS vars
           "--border-color": borderColor,
           "--glow-color": glowColor,
         }}
       >
-        <span
-          className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] left-[-10px] border-r-0 border-b-0"
-          style={{
-            borderColor: "var(--border-color)",
-            filter: "drop-shadow(0 0 4px var(--border-color))",
-          }}
-        ></span>
-        <span
-          className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
-          style={{
-            borderColor: "var(--border-color)",
-            filter: "drop-shadow(0 0 4px var(--border-color))",
-          }}
-        ></span>
-        <span
-          className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
-          style={{
-            borderColor: "var(--border-color)",
-            filter: "drop-shadow(0 0 4px var(--border-color))",
-          }}
-        ></span>
-        <span
-          className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
-          style={{
-            borderColor: "var(--border-color)",
-            filter: "drop-shadow(0 0 4px var(--border-color))",
-          }}
-        ></span>
+        {["tl", "tr", "bl", "br"].map((corner) => (
+          <span
+            key={corner}
+            className={`absolute w-4 h-4 border-[3px] rounded-[3px] ${corner === "tl"
+              ? "top-[-10px] left-[-10px] border-r-0 border-b-0"
+              : corner === "tr"
+                ? "top-[-10px] right-[-10px] border-l-0 border-b-0"
+                : corner === "bl"
+                  ? "bottom-[-10px] left-[-10px] border-r-0 border-t-0"
+                  : "bottom-[-10px] right-[-10px] border-l-0 border-t-0"
+              }`}
+            style={{
+              borderColor: "var(--border-color)",
+              filter: "drop-shadow(0 0 4px var(--border-color))",
+            }}
+          />
+        ))}
       </motion.div>
     </div>
   );

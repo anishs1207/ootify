@@ -1,15 +1,21 @@
 "use client";
+
 import { useState } from "react";
-import TiltedCard from "../../uiComponents/titleCard";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { TitleCard } from "@/components";
+import { useRouter, useSearchParams } from "next/navigation";
+
+interface Option {
+  label: string;
+  img: string;
+  value: "male" | "female";
+}
 
 export default function Qna() {
-  const uid = useSearchParams().get("uid"); 
-  console.log(uid);
-  const [gender, setGender] = useState("");
-  let router = useRouter();
-  const options = [
+  const uid = useSearchParams().get("uid");
+  const [gender, setGender] = useState<Option["value"] | "">("");
+  const router = useRouter();
+
+  const options: Option[] = [
     {
       label: "Male",
       img: "https://theclassywoman.net/wp-content/uploads/2017/11/how-to-be-a-gentleman.jpg",
@@ -21,31 +27,37 @@ export default function Qna() {
       value: "female",
     },
   ];
-  async function updateGender(gender) {
-    const response = await fetch(`http://localhost:3001/prefrences/${uid}`, {
-      method: 'PUT',
+
+  async function updateGender(selectedGender: Option["value"]): Promise<void> {
+    if (!uid) return;
+
+    await fetch(`http://localhost:3001/prefrences/${uid}`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        gender: gender
-      })
-      })
+      body: JSON.stringify({ gender: selectedGender }),
+    });
   }
-  async function handleOptionClick(value) {
+
+  async function handleOptionClick(value: Option["value"]): Promise<void> {
     setGender(value);
     await updateGender(value);
-    router.push(`/prefrences?uid=${uid}`);
+
+    if (uid) {
+      router.push(`/prefrences?uid=${uid}`);
+    }
   }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1122] to-[#2c1b3a] px-6 py-12">
       <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 mb-12 text-center">
-        Who's behind the pixel ?
+        Who&apos;s behind the pixel ?
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 w-full max-w-5xl">
         {options.map((opt) => (
-          <TiltedCard
+          <TitleCard
             key={opt.value}
             imageSrc={opt.img}
             altText={opt.label}
@@ -67,9 +79,8 @@ export default function Qna() {
                 </p>
               </div>
             }
-            className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-transform duration-500 hover:scale-105 ${
-              gender === opt.value ? "ring-4 ring-purple-400" : ""
-            }`}
+          // className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-transform duration-500 hover:scale-105 ${gender === opt.value ? "ring-4 ring-purple-400" : ""
+          //   }`}
           />
         ))}
       </div>
