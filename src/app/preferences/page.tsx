@@ -1,11 +1,20 @@
 "use client";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
+interface Occasion {
+  label: string;
+  img: string;
+  value: string;
+}
+
 export default function OccasionsPage() {
-  const [selectedOccasions, setSelectedOccasions] = useState([]);
-  const uid = useSearchParams().get("uid");
-  const occasions = [
+  const router = useRouter();
+  const uid = useSearchParams().get("uid") || ""; // ensure string
+  const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+
+  const occasions: Occasion[] = [
     {
       label: "College",
       img: "https://launchacademytulsa.com/wp-content/uploads/2012/08/Depositphotos_10527524_m.jpg",
@@ -38,25 +47,24 @@ export default function OccasionsPage() {
     },
   ];
 
-  function handleOccasionClick(value) {
+  function handleOccasionClick(value: string) {
     setSelectedOccasions((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   }
 
-  function handleNext() {
-    fetch(`http://localhost:3001/prefrences/${uid}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        uid: uid,
-        occasions: selectedOccasions,
-      }),
-      credentials: "include",
-    });
-    alert("Your preferences have been saved!");
+  async function handleNext() {
+    try {
+      await fetch(`http://localhost:3001/prefrences/${uid}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uid, occasions: selectedOccasions }),
+        credentials: "include",
+      });
+      router.push(`/dashboard?uid=${uid}`);
+    } catch (error) {
+      console.error("Error updating occasions:", error);
+    }
   }
 
   return (
@@ -65,29 +73,18 @@ export default function OccasionsPage() {
         What Occasions Do You Usually Attend? 🎉
       </h1>
 
-      {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
         {occasions.map((occ) => {
           const isSelected = selectedOccasions.includes(occ.value);
-
           return (
             <div
               key={occ.value}
               onClick={() => handleOccasionClick(occ.value)}
               className={`relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-all duration-300 ${
-                isSelected
-                  ? "ring-4 ring-purple-500 scale-105"
-                  : "hover:scale-105"
+                isSelected ? "ring-4 ring-purple-500 scale-105" : "hover:scale-105"
               }`}
             >
-              {/* Background Image */}
-              <img
-                src={occ.img}
-                alt={occ.label}
-                className="w-full h-64 object-cover"
-              />
-
-              {/* Overlay */}
+              <img src={occ.img} alt={occ.label} className="w-full h-64 object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
                 <p className="text-xl font-semibold text-white flex items-center gap-2">
                   {occ.label}
@@ -99,17 +96,12 @@ export default function OccasionsPage() {
         })}
       </div>
 
-      {/* Selected Text */}
       {selectedOccasions.length > 0 && (
         <p className="mt-12 text-xl text-white font-medium text-center">
-          Selected:{" "}
-          <span className="text-purple-400 font-semibold">
-            {selectedOccasions.join(", ")}
-          </span>
+          Selected: <span className="text-purple-400 font-semibold">{selectedOccasions.join(", ")}</span>
         </p>
       )}
 
-      {/* Next Button */}
       <button
         onClick={handleNext}
         disabled={selectedOccasions.length === 0}

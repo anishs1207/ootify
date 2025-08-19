@@ -45,7 +45,7 @@ export default function Qna() {
     await updateGender(value);
 
     if (uid) {
-      router.push(`/prefrences?uid=${uid}`);
+      router.push(`/preferences?uid=${uid}`);
     }
   }
 
