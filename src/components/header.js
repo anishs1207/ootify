@@ -1,20 +1,8 @@
 "use client";
 import { Bell } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-export default function Header(){
- const uid = useSearchParams().get("uid");
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    async function fetchUser() {
-      const res = await fetch(`http://localhost:3001/prefrences/${uid}`);
-      const data = await res.json();
-      console.log(data);
-      setUser(data);
-    }
-    fetchUser();
-  })
-   
+
+export default function Header({user}){
+   console.log(user);
     return(
         <header className="sticky top-0 z-20 flex justify-end items-center p-4 pr-8 border-b border-t border-t-cyan-500/20 border-b-gray-700/50 bg-[#1a1823]/80 backdrop-blur-sm">
             <div className="flex items-center gap-6">
