@@ -1,6 +1,6 @@
 "use client";
 import { Search, Home, Shirt, Star, MessageSquare, Calendar, User, Settings } from 'lucide-react';
-
+import { useState } from 'react';
 const navLinks = [
   { name: 'Home', icon: Home, active: true },
   { name: 'Wardrobe', icon: Shirt, active: false },
@@ -11,6 +11,7 @@ const navLinks = [
 ];
 
 export default function Sidebar() {
+  const [activeLink, setActiveLink] = useState('Home');
   return (
     <aside className="w-64 h-full bg-[#242131] p-6 flex flex-col flex-shrink-0">
       <div className="flex items-center gap-3 mb-8">
@@ -28,11 +29,11 @@ export default function Sidebar() {
 
       <nav className="flex flex-col gap-2">
         {navLinks.map((link) => (
-          <a
+          <a onClick={() => setActiveLink(link.name)}
             key={link.name}
             href="#"
             className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
-              link.active ? 'bg-[#4A3E5E] text-white' : 'hover:bg-[#3a344a]'
+            activeLink === link.name ? 'bg-[#4A3E5E] text-white' : 'hover:bg-[#3a344a]'
             }`}
           >
             <link.icon className="w-5 h-5" />
