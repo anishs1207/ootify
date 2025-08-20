@@ -61,7 +61,7 @@ export default function OccasionsPage() {
         body: JSON.stringify({ uid, occasions: selectedOccasions }),
         credentials: "include",
       });
-      router.push(`/dashboard?uid=${uid}`);
+      router.push(`/protected/dashboard?uid=${uid}`);
     } catch (error) {
       console.error("Error updating occasions:", error);
     }

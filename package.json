@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^1.15.0",
     "@prisma/client": "^6.14.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.3",
@@ -25,7 +26,11 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
+    "react-markdown": "^10.1.0",
     "react-router": "^7.8.1",
+    "readline-sync": "^1.4.10",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

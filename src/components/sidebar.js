@@ -1,16 +1,20 @@
 "use client";
 import { Search, Home, Shirt, Star, MessageSquare, Calendar, User, Settings } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { name: 'Home', icon: Home, active: true },
-  { name: 'Wardrobe', icon: Shirt, active: false },
-  { name: 'Recommendations', icon: Star, active: false },
-  { name: 'Stylist Chat', icon: MessageSquare, active: false },
-  { name: 'Calendar', icon: Calendar, active: false },
-  { name: 'Profile', icon: User, active: false },
+  { name: 'Home', icon: Home, link: '/protected/dashboard' },
+  { name: 'Wardrobe', icon: Shirt, link: '' },
+  { name: 'Recommendations', icon: Star, link: '' },
+  { name: 'Stylist Chat', icon: MessageSquare, link: '/protected/chatbot' },
+  { name: 'Calendar', icon: Calendar, link: '' },
+  { name: 'Profile', icon: User, link: '' },
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="w-64 h-full bg-[#242131] p-6 flex flex-col flex-shrink-0">
       <div className="flex items-center gap-3 mb-8">
@@ -27,18 +31,15 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex flex-col gap-2">
-        {navLinks.map((link) => (
-          <a
-            key={link.name}
-            href="#"
-            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
-              link.active ? 'bg-[#4A3E5E] text-white' : 'hover:bg-[#3a344a]'
-            }`}
-          >
-            <link.icon className="w-5 h-5" />
-            <span>{link.name}</span>
-          </a>
-        ))}
+        {navLinks.map((link) => {
+          const isActive = pathname === link.link;
+          return (
+            <Link key={link.name} href={link.link} className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${isActive ? 'bg-[#4A3E5E] text-white' : 'hover:bg-[#3a344a]'}`}>
+              <link.icon className="w-5 h-5" />
+              <span>{link.name}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="mt-auto">

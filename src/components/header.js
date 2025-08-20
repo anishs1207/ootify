@@ -1,5 +1,8 @@
+"use client";
 import { Bell } from 'lucide-react';
+
 export default function Header({user}){
+   console.log(user);
     return(
         <header className="sticky top-0 z-20 flex justify-end items-center p-4 pr-8 border-b border-t border-t-cyan-500/20 border-b-gray-700/50 bg-[#1a1823]/80 backdrop-blur-sm">
             <div className="flex items-center gap-6">
