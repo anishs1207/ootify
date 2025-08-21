@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TitleCard } from "@/components";
+import { TitleCard } from "@/components/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface Option {

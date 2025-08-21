@@ -1,7 +1,7 @@
 "use client";
 
 import { auth, provider, signInWithPopup } from "../app/firebase";
-import { BlurText, TrueFocus } from "@/components";
+import { BlurText, TrueFocus } from "@/components/dashboard";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Header from "@/components/landing/Header";
@@ -31,7 +31,7 @@ export default function Home() {
                     id: user.uid,
                     name: user.displayName,
                     email: user.email,
-                    avatar : user.photoURL
+                    avatar: user.photoURL
                 },
                 { withCredentials: true }
             );
