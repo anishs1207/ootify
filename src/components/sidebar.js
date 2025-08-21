@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const navLinks = [
   { name: 'Home', icon: Home, link: '/protected/dashboard' },
   { name: 'Wardrobe', icon: Shirt, link: '' },
+  { name: 'Body Type', icon: User, link: '/body-type' },
   { name: 'Recommendations', icon: Star, link: '' },
   { name: 'Stylist Chat', icon: MessageSquare, link: '/protected/chatbot' },
   { name: 'Calendar', icon: Calendar, link: '' },
