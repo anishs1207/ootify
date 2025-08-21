@@ -100,7 +100,7 @@ export async function POST(req: Request) {
         {
               inlineData: {
                 mimeType,
-                data: base64, // <— Gemini will actually “see” the image now
+                data: base64,
               },
             },
       ],
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
         ],
         generationConfig: {
         temperature: 0,
-        response_mime_type: "application/json", // <— forces raw JSON (no code fences)
+        response_mime_type: "application/json",
       },
     };
 
@@ -127,7 +127,6 @@ export async function POST(req: Request) {
         { error: "Gemini request failed", detail: apiErr },
         { status: 502 }
       );
-
     }
    
     
@@ -139,15 +138,11 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
-
-    // parse the response coming from the llm here
     
     let parsed: any;
     try {
-      // When response_mime_type=application/json, `text` should already be pure JSON
       parsed = JSON.parse(responseText);
     } catch {
-      // Fallback: strip code fences if model ignored the MIME (rare, but safe)
       const cleaned = responseText
         .trim()
         .replace(/^(```json|```|'''json|''')/gi, "")
@@ -158,8 +153,9 @@ export async function POST(req: Request) {
 
     console.log ("parsed", parsed);
 
-    // check if parsed is of correct format:
-     const allowedTypes = new Set(["Top", "Lower", "FootWear", "Accessories"]);
+    
+    const allowedTypes = new Set(["Top", "Lower", "FootWear", "Accessories"]);
+    
     if (
       !parsed ||
       typeof parsed !== "object" ||
