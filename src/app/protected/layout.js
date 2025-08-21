@@ -1,7 +1,7 @@
 "use client";
-import Sidebar from "../../components/sidebar";
-import Header from "../../components/header";
-import LightRays from "../../components/lightRays";
+import Sidebar from "../../components/dashboard/sidebar";
+import Header from "../../components/dashboard/header";
+import LightRays from "../../components/dashboard/lightRays";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/userContext";
