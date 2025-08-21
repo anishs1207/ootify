@@ -13,3 +13,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  clothes   Clothe[]
+}
+
+model Clothe {
+  id          String     @id @default(cuid())
+  type        ClotheType
+  name        String
+  link        String
+  description String?
+  color       String?
+  price       Float?
+  imageUrl    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to user
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+enum ClotheType {
+  Top
+  Lower
+  FootWear
+  Accessories
+}
