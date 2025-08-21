@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { name: 'Home', icon: Home, link: '/protected/dashboard' },
-  { name: 'Wardrobe', icon: Shirt, link: '' },
+  { name: 'Wardrobe', icon: Shirt, link: '/protected/wardrobe' },
   { name: 'Recommendations', icon: Star, link: '' },
   { name: 'Stylist Chat', icon: MessageSquare, link: '/protected/chatbot' },
   { name: 'Calendar', icon: Calendar, link: '' },
