@@ -176,21 +176,17 @@ export default function BodyTypeForm() {
   const calculateBodyType = () => {
     setIsCalculating(true);
     
-    // Simulate calculation delay for better UX
     setTimeout(() => {
-      const height = parseFloat(formData.height) / 100; // Convert to meters
+      const height = parseFloat(formData.height) / 100;
       const weight = parseFloat(formData.weight);
       const chest = parseFloat(formData.chest);
       const waist = parseFloat(formData.waist);
       const hips = parseFloat(formData.hips);
 
-      // Calculate BMI
       const bmi = weight / (height * height);
 
-      // Calculate Waist-Hip Ratio
       const waistHipRatio = waist / hips;
 
-      // Determine body type based on measurements
       let bodyType = "";
       let bodyTypeKey = "";
 
