@@ -91,6 +91,32 @@ const wardrobeItems = [
   },
 ];
 
+const mockfit = {
+  "fitName": "Casual Comfort",
+  "top": {
+    "id": "cmelkoltv0009uoz8m09h990d",
+    "type": "Top",
+    "name": "Dark Blue Denim Short-Sleeve Shirt",
+    "link": "https://res.cloudinary.com/dlgpdlcta/image/upload/v1755791088/clothes_uploads/xzv17z3qnqhugxdgyegj.png",
+    "description": "Dark blue denim shirt with short sleeves, a collared neckline, and a button-up front. It features a chest pocket and a relaxed fit.",
+  },
+  "lower": {
+    "id": "cmelkpefk000huoz8hpbfcua5",
+    "type": "Lower",
+    "name": "Beige Cargo Pants",
+    "link": "https://res.cloudinary.com/dlgpdlcta/image/upload/v1755791127/clothes_uploads/pzd6xptntc97q0ac9xqk.png",
+    "description": "Light beige cargo pants featuring a relaxed fit, elastic waistband, and multiple utility pockets on the sides. The pants are made from a lightweight, durable fabric.",
+  },
+  "footWear": {
+    "id": "cmelkq9sj000ruoz8kmkbqyyo",
+    "type": "FootWear",
+    "name": "Nike Black and White Running Shoes",
+    "link": "https://res.cloudinary.com/dlgpdlcta/image/upload/v1755791166/clothes_uploads/cmt9jowlpfwwhuenlrui.png",
+    "description": "Black running shoes with a white Nike swoosh on the side, featuring a black mesh upper, black laces, and a thick white sole. The tongue has a white label with black text.",
+  },
+  "accessories": null
+};
+
 app.get("/discover", (req, res) => {
     console.log("req sent") ;
   res.status(200).send({ discoverCategories});
@@ -102,5 +128,9 @@ app.get("/recommended", (req, res) => {
 
 app.get("/wardrobe",(req,res)=>{
   res.status(200).send({wardrobeItems});
+})
+
+app.get("/fit",(req,res)=>{
+  res.status(200).send({mockfit});
 })
 app.listen(3002,()=>console.log("Server started on port 3002"));
