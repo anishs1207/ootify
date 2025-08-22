@@ -202,7 +202,8 @@ export async function POST(req: Request) {
       );
 
     }
-   
+
+    //@ts-ignore
     const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
 
     if (!responseText) {
@@ -247,6 +248,16 @@ export async function POST(req: Request) {
       parsed.accessories && parsed.accessories !== "none" ? prisma.clothe.findUnique({ where: { id: parsed.accessories } }) : null,
     ]);
 
+    const newFit = await prisma.fit.create({
+      data: {
+         userId: userId,
+         topId: topObj?.id || null,
+         lowerId: lowerObj?.id || null,
+         footWearId: footWearObj?.id || null,
+         accessoriesId: accessoriesObj?.id || null,
+      }
+    })
+
     const result = {
       fitName: parsed.fitName,
       top: topObj,
@@ -266,7 +277,7 @@ export async function POST(req: Request) {
 
 /*
 Sample Input:
-curl -X POST http://localhost:3000/api/recommend-clothes   -H "Content-Type: application/json"   -H "userId: 12345"   -d '{
+curl -X POST http://localhost:3000/api/recommend-clothes   -H "Content-Type: application/json"   -H "userId: test123"   -d '{
     "prompt": "Generate a fashionable outfit based on the clothes available in my closet."
 }'
 

@@ -22,6 +22,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   clothes   Clothe[]
+  fits      Fit[]
 }
 
 model Clothe {
@@ -40,6 +41,12 @@ model Clothe {
   // Relation to user
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  //Relation to fits:
+  topFits         Fit[] @relation("TopClothe")
+  lowerFits       Fit[] @relation("LowerClothe")
+  footWearFits    Fit[] @relation("FootWearClothe")
+  accessoriesFits Fit[] @relation("AccessoriesClothe")
 }
 
 enum ClotheType {
@@ -47,4 +54,26 @@ enum ClotheType {
   Lower
   FootWear
   Accessories
+}
+
+model Fit {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // Each fit belongs to a user
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Each fit can link to one item of each category
+  topId String?
+  top   Clothe? @relation("TopClothe", fields: [topId], references: [id])
+
+  lowerId String?
+  lower   Clothe? @relation("LowerClothe", fields: [lowerId], references: [id])
+
+  footWearId String?
+  footWear   Clothe? @relation("FootWearClothe", fields: [footWearId], references: [id])
+
+  accessoriesId String?
+  accessories   Clothe? @relation("AccessoriesClothe", fields: [accessoriesId], references: [id])
 }

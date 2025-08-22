@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary, UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
 import prisma from "@/lib/db";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
@@ -30,16 +30,17 @@ export async function POST(req: Request) {
     const base64 = buffer.toString("base64");
     const mimeType = file.type || "image/jpeg";
 
-    const cloudinaryResult  = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "clothes_uploads", resource_type: "image" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      uploadStream.end(buffer);
-    });
+    const cloudinaryResult = await new Promise<UploadApiResponse>((resolve, reject) => {
+  const uploadStream = cloudinary.uploader.upload_stream(
+    { folder: "clothes_uploads", resource_type: "image" },
+    (error?: UploadApiErrorResponse, result?: UploadApiResponse) => {
+      if (error) reject(error);
+      else if (result) resolve(result);
+      else reject(new Error("Unknown Cloudinary error"));
+    }
+  );
+  uploadStream.end(buffer);
+});
 
     const linkOfImage: string | undefined = cloudinaryResult?.secure_url;
     
@@ -121,15 +122,18 @@ export async function POST(req: Request) {
         }
     });
 
-    } catch(err) {
-    const apiErr = err?.response?.data?.error?.message || err?.message || "Unknown error";
-      return NextResponse.json(
-        { error: "Gemini request failed", detail: apiErr },
-        { status: 502 }
-      );
+    } catch(err: any) {
+      const apiErr =
+        err?.response?.data?.error?.message ||
+        err?.message ||
+        "Unknown error";
+
+    return NextResponse.json(
+      { error: "Gemini request failed", detail: apiErr },
+      { status: 502 }
+  );
     }
-   
-    
+    //@ts-ignore
     const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
 
     if (!responseText) {
@@ -173,7 +177,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ Save in Prisma
     const clothe = await prisma.clothe.create({
       data: {
         type:parsed.type,
