@@ -1,5 +1,5 @@
 "use client";
-import { Search, Home, Shirt, Star, MessageSquare, Calendar, User, Settings } from 'lucide-react';
+import { Search, Home, Shirt, Star, MessageSquare, Calendar, User, Settings, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -7,6 +7,7 @@ const navLinks = [
   { name: 'Home', icon: Home, link: '/protected/dashboard' },
   { name: 'Wardrobe', icon: Shirt, link: '/protected/wardrobe' },
   { name: 'Body Type', icon: User, link: '/protected/body-type' },
+  { name: 'Upload', icon: Upload, link: '/protected/upload' },
   { name: 'Recommendations', icon: Star, link: '/protected/reccomended' },
   { name: 'Stylist Chat', icon: MessageSquare, link: '/protected/chatbot' },
   { name: 'Calendar', icon: Calendar, link: '' },
