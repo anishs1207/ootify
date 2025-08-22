@@ -77,7 +77,7 @@ export default function OnboardingFlow() {
   async function handleGenderSelect(value: Option["value"]): Promise<void> {
     setGender(value);
     if (uid) {
-      await fetch(`http://localhost:3001/prefrences/${uid}`, {
+      await fetch(`http://localhost:3000/prefrences/${uid}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ gender: value }),
@@ -94,14 +94,23 @@ export default function OnboardingFlow() {
   }
 
   async function handleNext(): Promise<void> {
-    await fetch(`http://localhost:3001/prefrences/${uid}`, {
+    router.push(`/wardrobe?uid=${uid}`);
+  try {
+    const res = await fetch(`http://localhost:3001/prefrences/${uid}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uid, occasions: selectedOccasions }),
       credentials: "include",
     });
-    router.push(`/protected/dashboard?uid=${uid}`);
+
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status}`);
+    }
+
+  } catch (error) {
+    console.error("❌ Failed to save preferences:", error);
   }
+}
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-gradient-to-br from-[#1a1122] to-[#2c1b3a]">
