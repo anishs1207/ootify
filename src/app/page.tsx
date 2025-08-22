@@ -2,83 +2,49 @@
 
 import { BlurText, TrueFocus } from "@/components/dashboard";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
-
+import { signIn, useSession } from "next-auth/react";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
+import { FcGoogle } from "react-icons/fc";
+import { Loader2 } from "lucide-react";
 
 export default function Home() {
     const router = useRouter();
-
-    const firebaseConfig = {
-        apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-        authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-        measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-    };
-
-    const app = initializeApp(firebaseConfig);
-
-    let analytics;
-    if (typeof window !== "undefined") {
-        analytics = getAnalytics(app);
-    }
-
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+    const { data: session, status } = useSession();
+    const isSigningIn = status === "loading";
 
     const handleAnimationComplete = () => {
         console.log("Animation completed!");
     };
 
-    async function handleGoogleLogin() {
+    const handleGoogleLogin = async () => {
         try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-
-            if (!user) {
-                throw new Error("No user returned from Firebase");
-            }
-
-            // POST request with axios
-            const postResponse = await axios.post(
-                "http://localhost:3001/prefrences",
-                {
-                    id: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    avatar: user.photoURL
-                },
-                { withCredentials: true }
-            );
-
-            console.log("POST response:", postResponse.data);
-
-            // GET request with axios
-            const getResponse = await axios.get("http://localhost:3001/prefrences", {
-                withCredentials: true,
-            });
-
-            console.log("GET response:", getResponse.data);
-
-            console.log("Logged in user:", user);
-
-            router.push(`/qna?uid=${user.uid}`);
+            // Redirect user to Google sign-in
+            await signIn("google", { callbackUrl: "/qna" });
+            // After sign-in, NextAuth will redirect automatically
         } catch (error) {
             console.error("Login error:", error);
             alert("Login failed!");
         }
-    }
+    };
 
     return (
         <>
             <Header />
+            <div className="flex space-x-3">
+                <button
+                    onClick={handleGoogleLogin}
+                    disabled={isSigningIn}
+                    className="bg-white border border-green-700 text-green-800 px-4 py-2 rounded-md text-sm font-medium hover:bg-green-100 transition flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                    {isSigningIn ? (
+                        <Loader2 className="animate-spin h-4 w-4" />
+                    ) : (
+                        <FcGoogle className="text-xl" />
+                    )}
+                    {isSigningIn ? "Signing in..." : "Sign In with Google"}
+                </button>
+            </div>
             <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-[#1a1122] gap-7">
                 <img
                     src="https://www.businessoffashion.com/resizer/NLhu1lkv4dMs2qlpxrxEA6XFRBo=/arc-photo-businessoffashion/eu-central-1-prod/public/2YRLNZFFTJBJ3I6N2AP7Q2ZA64.png"
@@ -97,12 +63,8 @@ export default function Home() {
                     className="text-4xl mb-4 text-white font-bold"
                 />
 
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    onClick={handleGoogleLogin}
-                >
-                    Continue with Google
-                </button>
+
+
 
                 <TrueFocus
                     sentence="Drip your way"
