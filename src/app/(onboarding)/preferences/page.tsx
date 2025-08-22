@@ -61,7 +61,7 @@ export default function OccasionsPage() {
         body: JSON.stringify({ uid, occasions: selectedOccasions }),
         credentials: "include",
       });
-      router.push(`/protected/dashboard?uid=${uid}`);
+      router.push(`/dashboard?uid=${uid}`);
     } catch (error) {
       console.error("Error updating occasions:", error);
     }
@@ -105,8 +105,8 @@ export default function OccasionsPage() {
         onClick={handleNext}
         disabled={selectedOccasions.length === 0}
         className={`mt-8 px-6 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 ${selectedOccasions.length > 0
-            ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 shadow-lg"
-            : "bg-gray-600 text-gray-300 cursor-not-allowed"
+          ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 shadow-lg"
+          : "bg-gray-600 text-gray-300 cursor-not-allowed"
           }`}
       >
         Next →
