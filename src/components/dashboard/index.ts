@@ -4,6 +4,8 @@ import TrueFocus from "./TrueFocus";
 import UploadClothes from "./UploadClothes";
 import BodyTypeForm from "./BodyTypeForm";
 import Header from "./Header";
+import LightRays from "./lightRays";
+import Sidebar from "./sidebar";
 
 export {
     BlurText, 
@@ -12,4 +14,6 @@ export {
     UploadClothes,
     BodyTypeForm,
     Header,
+    LightRays,
+    Sidebar
 }

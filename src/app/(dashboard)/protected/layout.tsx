@@ -1,21 +1,34 @@
 "use client";
-import Sidebar from "../../components/dashboard/sidebar";
-import Header from "../../components/dashboard/header";
-import LightRays from "../../components/dashboard/lightRays";
-import { useState, useEffect } from "react";
+
+import { Sidebar, Header, LightRays } from "@/components/dashboard";
+import { useState, useEffect, ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/userContext";
+import axios from "axios";
 
-export default function Layout({ children }) {
+interface User {
+  id: string;
+  name?: string;
+  email?: string;
+  image?: string;
+  gender?: string;
+  occasions?: string[];
+  // Add other fields you expect from your API
+}
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const uid = useSearchParams().get("uid");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     async function fetchUser() {
       if (!uid) return;
       try {
-        const res = await fetch(`http://localhost:3001/prefrences/${uid}`);
-        const data = await res.json();
+        const { data } = await axios.get<User>(`http://localhost:3001/prefrences/${uid}`);
         console.log("Fetched user:", data);
         setUser(data);
       } catch (err) {
