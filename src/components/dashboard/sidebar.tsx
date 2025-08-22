@@ -1,17 +1,15 @@
 "use client";
-import { Search, Home, Shirt, Star, MessageSquare, Calendar, User, Settings, Upload } from 'lucide-react';
+import { Search, Shirt, Star, MessageSquare, Calendar, User, Settings, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { name: 'Home', icon: Home, link: '/dashboard' },
+  { name: 'Fits', icon: Shirt, link: '/dashboard' },
   { name: 'Wardrobe', icon: Shirt, link: '/wardrobe' },
   { name: 'Body Type', icon: User, link: '/body-type' },
   { name: 'Upload', icon: Upload, link: '/upload' },
-  { name: 'Recommendations', icon: Star, link: '/reccomended' },
+  { name: 'Recommendations', icon: Star, link: '/recomended' },
   { name: 'Stylist Chat', icon: MessageSquare, link: '/chatbot' },
-  { name: 'Calendar', icon: Calendar, link: '' },
-  { name: 'Profile', icon: User, link: '' },
 ];
 
 export default function Sidebar() {
