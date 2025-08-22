@@ -1,37 +1,50 @@
 # OOTDify
 
-![OOTDify](./public/images/ootdify-app.png)
+<p align="center">
+  <img src="./public/images/ootdify-app.png" alt="OOTDify" width="400"/>
+</p>
 
-**OOTDify** is a modern AI-powered fashion app that helps you organize your wardrobe, get personalized outfit recommendations, analyze your body type, and chat with your own stylist bot. Designed for GenZ and trend-conscious users, OOTDify makes fashion effortless, fun, and uniquely yours.
+**OOTDify** is a cutting-edge, AI-powered fashion platform designed to revolutionize how GenZ and trend-conscious users interact with their wardrobes. Effortlessly organize your clothes, receive personalized outfit recommendations, analyze your body type, and chat with your own stylist bot—all in one sleek app. OOTDify makes fashion fun, easy, and uniquely yours.
 
-## The Problem: Fashion Fatigue for GenZ & Trend-Conscious People
+---
 
-![frustrated-girl](./public/images/frustrated-girl.png)
+## 🧩 The Problem: Fashion Fatigue for GenZ & Trend-Conscious People
 
-For GenZ and trend-conscious individuals, fashion is a form of self-expression. But staying stylish comes with its own set of challenges:
+<p align="center">
+  <img src="./public/images/frustrated-girl.png" alt="Frustrated Girl" width="350"/>
+</p>
 
-- **Decision Fatigue:** Too much time is wasted every day deciding what to wear, especially when trying to match the latest trends or create new looks.
-- **Underused Wardrobe:** Many clothes are bought for a vibe or occasion but end up rarely worn, buried in the closet and forgotten.
-- **Overwhelming Choices:** With fast fashion and endless options, it’s hard to keep track of what you own and how to style it.
-- **Lack of Personalization:** Most apps and advice don’t consider your unique body type, preferences, or the actual clothes you own.
+Fashion is a powerful form of self-expression, especially for GenZ and those who love to stay ahead of trends. However, this passion comes with its own set of challenges:
 
-## How OOTDify Solves This
+- **Decision Fatigue:** Endless hours spent deciding what to wear, trying to match trends or create new looks.
+- **Underused Wardrobe:** Clothes bought for a vibe or occasion often end up forgotten and unworn.
+- **Overwhelming Choices:** Fast fashion and countless options make it hard to keep track of what you own and how to style it.
+- **Lack of Personalization:** Most fashion apps and advice ignore your unique body type, preferences, and actual wardrobe.
 
-![solution](./public/images/upload-clothes-img.png)
+---
 
-OOTDify is designed to make fashion effortless, fun, and personal:
+## 💡 How OOTDify Solves This
 
-- **Smart Digital Wardrobe:** Upload and organize all your clothes, so you always know what you have and never forget a piece.
-- **AI-Powered Recommendations:** Get daily outfit ideas tailored to your wardrobe, body type, and the latest trends—no more indecision.
-- **Body Type Analyzer:** Discover your body shape and get style tips that actually work for you.
-- **Virtual Try-On:** Preview outfits before wearing them, reducing regret and boosting confidence.
-- **Personal Stylist Chatbot:** Ask for advice, get instant answers, and stay ahead of trends with your own AI stylist.
-- **Community & Brands:** Discover new styles, brands, and connect with others who share your fashion passion.
+<p align="center">
+  <img src="./public/images/upload-clothes-img.png" alt="Upload Clothes" width="350"/>
+</p>
 
+OOTDify is crafted to make fashion effortless, enjoyable, and personal:
 
-OOTDify is your personal AI-powered fashion stylist and digital wardrobe. It helps users organize their clothes, get daily outfit recommendations, analyze their body type for personalized style tips, and interact with an AI stylist chatbot. Built with Next.js, Prisma, and a modern UI, OOTDify brings the future of fashion to your fingertips.
+- **Smart Digital Wardrobe:** Seamlessly upload and organize your clothes, ensuring you never forget a piece.
+- **AI-Powered Recommendations:** Receive daily outfit ideas tailored to your wardrobe, body type, and the latest trends—eliminating indecision.
+- **Body Type Analyzer:** Discover your body shape and unlock style tips that truly flatter you.
+- **Virtual Try-On:** Experiment with outfits before wearing them, boosting confidence and reducing regret.
+- **Personal Stylist Chatbot:** Get instant advice, trend updates, and fashion tips from your own AI stylist.
+- **Community & Brands:** Explore new styles, connect with fellow fashion enthusiasts, and discover trending brands.
 
-## Features
+---
+
+OOTDify is your personal AI-powered fashion stylist and digital wardrobe. Organize your clothes, get daily outfit recommendations, analyze your body type for personalized style tips, and interact with an AI stylist chatbot. Built with Next.js, Prisma, and a modern UI, OOTDify brings the future of fashion to your fingertips.
+
+---
+
+## ✨ Features
 
 ### 1. Digital Wardrobe
 - Upload photos of your clothes to create a smart, digital closet.
@@ -56,13 +69,15 @@ OOTDify is your personal AI-powered fashion stylist and digital wardrobe. It hel
 
 ### 6. Community & Brands
 - Discover trending categories, featured brands, and new arrivals.
-- Join the Ootify community to share and explore styles.
+- Join the OOTDify community to share and explore styles.
 
 ### 7. Authentication & User Profiles
 - Secure login with Google via NextAuth.
 - Personalized experience based on user preferences and wardrobe.
 
-## Tech Stack
+---
+
+## 🛠 Tech Stack
 
 - **Frontend:** Next.js, React, Tailwind CSS, Radix UI, Lucide Icons
 - **Backend:** Next.js API routes, Express (for AI/chatbot), Prisma ORM, PostgreSQL
@@ -70,7 +85,9 @@ OOTDify is your personal AI-powered fashion stylist and digital wardrobe. It hel
 - **Image Uploads:** Cloudinary
 - **Authentication:** NextAuth.js
 
-## Folder Structure
+---
+
+## 📁 Folder Structure
 
 - `src/app/` — Main app pages (dashboard, wardrobe, upload, recommendations, chatbot, body-type analyzer)
 - `src/components/` — Reusable UI and feature components
@@ -79,24 +96,28 @@ OOTDify is your personal AI-powered fashion stylist and digital wardrobe. It hel
 - `public/` — Static assets and images
 - `test-outfits/` — Sample outfit images for testing
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 1. **Install dependencies:**
-	```bash
-	npm install
-	```
+    ```bash
+    npm install
+    ```
 2. **Set up environment variables:**
-	- Create a `.env` file with your database and API keys (see `prisma/schema.prisma` for DB setup).
+    - Create a `.env` file with your database and API keys (see `prisma/schema.prisma` for DB setup).
 3. **Run database migrations:**
-	```bash
-	npx prisma migrate dev
-	```
+    ```bash
+    npx prisma migrate dev
+    ```
 4. **Start the development server:**
-	```bash
-	npm run dev
-	```
+    ```bash
+    npm run dev
+    ```
 
-## API Endpoints
+---
+
+## 🔗 API Endpoints
 
 - `/api/add-clothes` — Upload new clothing items
 - `/api/recommend-clothes` — Get outfit recommendations
