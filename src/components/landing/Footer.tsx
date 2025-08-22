@@ -1,100 +1,46 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { FaInstagram, FaTwitter, FaDiscord } from "react-icons/fa";
 
 export default function Footer() {
     return (
-        <footer className="border-t border-primary/20 bg-card/30 backdrop-blur-sm">
-            <div className="container py-12">
-                <div className="grid gap-8 md:grid-cols-4">
-                    {/* Brand Section */}
-                    <div>
-                        <div className="flex items-center space-x-3 mb-4">
-                            <div className="gradient-bg-primary p-2 rounded-xl">
-                                <Sparkles className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                StyleAI
-                            </span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                            Your personal AI fashion stylist for the modern generation.
-                        </p>
-                    </div>
+        <footer className="w-full bg-[#1a1122] py-8 px-6 md:px-12  border-t border-[#2a1a36]">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                {/* Logo */}
+                <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500"
+                >
+                    Ootify
+                </motion.div>
 
-                    {/* Product Links */}
-                    <div>
-                        <h4 className="font-semibold mb-4">Product</h4>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Features
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Pricing
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    API
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Company Links */}
-                    <div>
-                        <h4 className="font-semibold mb-4">Company</h4>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    About
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Careers
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Support Links */}
-                    <div>
-                        <h4 className="font-semibold mb-4">Support</h4>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Help Center
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Privacy Policy
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-foreground transition-colors">
-                                    Terms of Service
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                {/* Social Icons */}
+                <div className="flex gap-6 text-white text-2xl">
+                    {[FaInstagram, FaTwitter, FaDiscord].map((Icon, idx) => (
+                        <motion.a
+                            key={idx}
+                            href="#"
+                            whileHover={{ scale: 1.2, color: "#7f5af0" }}
+                            className="transition-all duration-300"
+                        >
+                            <Icon />
+                        </motion.a>
+                    ))}
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="border-t border-primary/20 mt-8 pt-8 text-center text-sm text-muted-foreground">
-                    <p>
-                        &copy; 2024 StyleAI. All rights reserved. Made with ❤️ for fashion lovers everywhere.
-                    </p>
-                </div>
+                {/* Copyright */}
+                <motion.p
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                    className="text-gray-400 text-sm md:text-base text-center"
+                >
+                    &copy; {new Date().getFullYear()} Ootify. All rights reserved.
+                </motion.p>
             </div>
         </footer>
     );
