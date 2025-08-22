@@ -1,0 +1,197 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FaCheck } from "react-icons/fa";
+
+interface Option {
+  label: string;
+  img: string;
+  value: "male" | "female";
+}
+
+interface Occasion {
+  label: string;
+  img: string;
+  value: string;
+}
+
+export default function OnboardingFlow() {
+  const router = useRouter();
+  const uid: string = useSearchParams().get("uid") || "";
+
+  // Steps
+  const [step, setStep] = useState<number>(1);
+  const [gender, setGender] = useState<Option["value"] | "">("");
+  const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+
+  // Gender options
+  const options: Option[] = [
+    {
+      label: "Male",
+      img: "https://theclassywoman.net/wp-content/uploads/2017/11/how-to-be-a-gentleman.jpg",
+      value: "male",
+    },
+    {
+      label: "Female",
+      img: "https://fashionista.com/.image/t_share/MTQ1NDEyODQ3MjE0NTM2NDY1/art-of-the-gentlewoman-7.jpg",
+      value: "female",
+    },
+  ];
+
+  // Occasion options
+  const occasions: Occasion[] = [
+    {
+      label: "College",
+      img: "https://launchacademytulsa.com/wp-content/uploads/2012/08/Depositphotos_10527524_m.jpg",
+      value: "college",
+    },
+    {
+      label: "Cinema",
+      img: "https://t3.ftcdn.net/jpg/06/52/50/84/360_F_652508416_PMVJMXZMgnpHmlUIoEnV6xlSTojSwiQ3.jpg",
+      value: "movies",
+    },
+    {
+      label: "Date",
+      img: "https://i.pinimg.com/736x/c4/71/33/c47133e2aa9dc8445f8adcb14ae935ee.jpg",
+      value: "date",
+    },
+    {
+      label: "Party",
+      img: "https://im.whatshot.in/img/2019/Feb/shutterstock-499233301-1550744233.jpg",
+      value: "party",
+    },
+    {
+      label: "Concerts",
+      img: "https://musicalsatans.com/wp-content/uploads/2025/02/IMG_20250228_235431.jpg",
+      value: "concerts",
+    },
+    {
+      label: "Travel",
+      img: "https://assets.traveltriangle.com/blog/wp-content/uploads/2019/01/places-to-visit-with-friends-new-og.jpg",
+      value: "travel",
+    },
+  ];
+
+  // Handle Gender Select
+  async function handleGenderSelect(value: Option["value"]): Promise<void> {
+    setGender(value);
+    if (uid) {
+      await fetch(`http://localhost:3001/prefrences/${uid}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gender: value }),
+      });
+    }
+    setTimeout(() => setStep(2), 500);
+  }
+
+  // Handle Occasion Select
+  function handleOccasionClick(value: string): void {
+    setSelectedOccasions((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  }
+
+  async function handleNext(): Promise<void> {
+    await fetch(`http://localhost:3001/prefrences/${uid}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid, occasions: selectedOccasions }),
+      credentials: "include",
+    });
+    router.push(`/protected/dashboard?uid=${uid}`);
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-gradient-to-br from-[#1a1122] to-[#2c1b3a]">
+      {/* Step Heading */}
+      <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 mb-12 text-center drop-shadow-md">
+        {step === 1 ? "Who's behind the pixel?" : "What occasions do you attend? 🎉"}
+      </h1>
+
+      {/* Gender Step */}
+      {step === 1 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 w-full max-w-4xl">
+          {options.map((opt: Option) => (
+            <div
+              key={opt.value}
+              onClick={() => handleGenderSelect(opt.value)}
+              className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-all duration-500 hover:scale-105 ${
+                gender === opt.value ? "ring-4 ring-purple-400" : ""
+              }`}
+            >
+              <img src={opt.img} alt={opt.label} className="w-full h-80 object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center p-4">
+                <p className="text-xl font-bold text-white drop-shadow-lg">{opt.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Occasion Step */}
+      {step === 2 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+            {occasions.map((occ: Occasion) => {
+              const isSelected: boolean = selectedOccasions.includes(occ.value);
+              return (
+                <div
+                  key={occ.value}
+                  onClick={() => handleOccasionClick(occ.value)}
+                  className={`relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-all duration-300 ${
+                    isSelected ? "ring-4 ring-purple-500 scale-105" : "hover:scale-105"
+                  }`}
+                >
+                  <img src={occ.img} alt={occ.label} className="w-full h-64 object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
+                    <p className="text-xl font-semibold text-white flex items-center gap-2">
+                      {occ.label}
+                      {isSelected && <FaCheck className="text-green-400" />}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {selectedOccasions.length > 0 && (
+            <p className="mt-12 text-lg text-white font-medium text-center">
+              Selected:{" "}
+              <span className="text-purple-400 font-semibold">
+                {selectedOccasions.join(", ")}
+              </span>
+            </p>
+          )}
+
+          <button
+            onClick={handleNext}
+            disabled={selectedOccasions.length === 0}
+            className={`mt-8 px-8 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 ${
+              selectedOccasions.length > 0
+                ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 shadow-lg"
+                : "bg-gray-600 text-gray-300 cursor-not-allowed"
+            }`}
+          >
+            Finish →
+          </button>
+        </>
+      )}
+
+      {/* Step Indicator */}
+      <div className="mt-10 flex gap-3">
+        <span
+          className={`w-4 h-4 rounded-full ${
+            step === 1 ? "bg-purple-500" : "bg-gray-500"
+          }`}
+        />
+        <span
+          className={`w-4 h-4 rounded-full ${
+            step === 2 ? "bg-purple-500" : "bg-gray-500"
+          }`}
+        />
+      </div>
+    </div>
+  );
+}

@@ -20,7 +20,7 @@ export default function Home() {
     const handleGoogleLogin = async () => {
         try {
             // Redirect user to Google sign-in
-            await signIn("google", { callbackUrl: "/qna" });
+            await signIn("google", { callbackUrl: "/onboarding" });
             // After sign-in, NextAuth will redirect automatically
         } catch (error) {
             console.error("Login error:", error);
