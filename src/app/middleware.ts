@@ -15,5 +15,6 @@ export const config = {
     '/reccommended',
     '/upload',
     '/wardrobe',
+    '/onboarding',
   ]
 };
