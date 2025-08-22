@@ -80,9 +80,8 @@ export default function OccasionsPage() {
             <div
               key={occ.value}
               onClick={() => handleOccasionClick(occ.value)}
-              className={`relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-all duration-300 ${
-                isSelected ? "ring-4 ring-purple-500 scale-105" : "hover:scale-105"
-              }`}
+              className={`relative rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-all duration-300 ${isSelected ? "ring-4 ring-purple-500 scale-105" : "hover:scale-105"
+                }`}
             >
               <img src={occ.img} alt={occ.label} className="w-full h-64 object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
@@ -105,11 +104,10 @@ export default function OccasionsPage() {
       <button
         onClick={handleNext}
         disabled={selectedOccasions.length === 0}
-        className={`mt-8 px-6 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 ${
-          selectedOccasions.length > 0
-            ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 shadow-lg"
-            : "bg-gray-600 text-gray-300 cursor-not-allowed"
-        }`}
+        className={`mt-8 px-6 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 ${selectedOccasions.length > 0
+          ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 shadow-lg"
+          : "bg-gray-600 text-gray-300 cursor-not-allowed"
+          }`}
       >
         Next →
       </button>
