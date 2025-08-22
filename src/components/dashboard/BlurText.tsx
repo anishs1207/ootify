@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   useMemo,
-  RefObject,
   CSSProperties,
 } from "react";
 

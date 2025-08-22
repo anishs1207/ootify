@@ -175,7 +175,7 @@ export default function BodyTypeForm() {
 
   const calculateBodyType = () => {
     setIsCalculating(true);
-    
+
     setTimeout(() => {
       const height = parseFloat(formData.height) / 100;
       const weight = parseFloat(formData.weight);
@@ -220,6 +220,7 @@ export default function BodyTypeForm() {
         }
       }
 
+      // @ts-ignore
       const bodyTypeInfo = bodyTypeData[formData.sex][bodyTypeKey as keyof typeof bodyTypeData.male];
 
       setResult({
@@ -456,6 +457,7 @@ export default function BodyTypeForm() {
                       Body Type: {result.bodyType}
                     </h3>
                     <p className="text-gray-300">
+                      {/* @ts-ignore */}
                       {bodyTypeData[formData.sex][result.bodyType.toLowerCase().replace(" ", "") as keyof typeof bodyTypeData.male]?.description}
                     </p>
                   </div>

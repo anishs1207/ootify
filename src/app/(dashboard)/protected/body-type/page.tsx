@@ -1,4 +1,4 @@
-import BodyTypeForm from "@/components/body-type/BodyTypeForm";
+import BodyTypeForm from "@/components/dashboard/BodyTypeForm";
 
 export default function BodyTypePage() {
   return <BodyTypeForm />;
